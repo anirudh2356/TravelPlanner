@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  color: #0f2846;
+}
+
+.font-display {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Reusable input focus ring matching the ocean theme */
+.input-base {
+  @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800
+    placeholder:text-slate-400 outline-none transition-all duration-150
+    focus:border-ocean-500 focus:ring-4 focus:ring-ocean-100;
+}
+
+.input-error {
+  @apply border-red-300 focus:border-red-500 focus:ring-red-100;
+}
+
+.btn-primary {
+  @apply flex w-full items-center justify-center gap-2 rounded-xl bg-ocean-700
+    px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-ocean-700/20
+    transition-all duration-150 hover:bg-ocean-800 active:scale-[0.99]
+    disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.card-surface {
+  @apply w-full max-w-md rounded-3xl bg-white/95 p-8 shadow-2xl shadow-ocean-950/30
+    backdrop-blur-sm sm:p-10;
+}
+
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
