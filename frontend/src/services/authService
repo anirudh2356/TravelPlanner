@@ -1,0 +1,157 @@
+/**
+ * authService.js
+ *
+ * Thin wrapper around the backend auth API.
+ * Swap BASE_URL / fetch calls for your real backend when it's ready.
+ *
+ * A MOCK MODE is included so the whole flow (register -> login ->
+ * protected route -> logout, forgot/reset password) is runnable and
+ * demoable with zero backend. Toggle via VITE_USE_MOCK in .env.
+ */
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
+const USE_MOCK = (import.meta.env.VITE_USE_MOCK ?? 'true') === 'true'
+
+// ---------- Mock in-memory "database" (persisted to localStorage) ----------
+const MOCK_DB_KEY = 'wanderly_mock_users'
+const MOCK_RESET_KEY = 'wanderly_mock_reset_tokens'
+
+function readMockUsers() {
+  return JSON.parse(localStorage.getItem(MOCK_DB_KEY) || '[]')
+}
+function writeMockUsers(users) {
+  localStorage.setItem(MOCK_DB_KEY, JSON.stringify(users))
+}
+function readResetTokens() {
+  return JSON.parse(localStorage.getItem(MOCK_RESET_KEY) || '{}')
+}
+function writeResetTokens(tokens) {
+  localStorage.setItem(MOCK_RESET_KEY, JSON.stringify(tokens))
+}
+function delay(ms = 600) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+function fakeToken(email) {
+  return btoa(`${email}:${Date.now()}`)
+}
+
+// ---------- Real fetch helper ----------
+async function apiRequest(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: { 'Content-Type': 'application/json', ...options.headers },
+    credentials: 'include',
+    ...options
+  })
+
+  let data = null
+  try {
+    data = await res.json()
+  } catch {
+    /* no body */
+  }
+
+  if (!res.ok) {
+    const message = data?.message || 'Something went wrong. Please try again.'
+    throw new Error(message)
+  }
+  return data
+}
+
+// ---------------------------- Public API ----------------------------
+
+export async function registerUser({ fullName, email, password }) {
+  if (USE_MOCK) {
+    await delay()
+    const users = readMockUsers()
+    if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
+      throw new Error('An account with this email already exists.')
+    }
+    const user = { id: crypto.randomUUID(), fullName, email, password }
+    users.push(user)
+    writeMockUsers(users)
+    const token = fakeToken(email)
+    return { token, user: { id: user.id, fullName, email } }
+  }
+
+  return apiRequest('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify({ fullName, email, password })
+  })
+}
+
+export async function loginUser({ email, password }) {
+  if (USE_MOCK) {
+    await delay()
+    const users = readMockUsers()
+    const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase())
+    if (!user || user.password !== password) {
+      throw new Error('Invalid email or password.')
+    }
+    const token = fakeToken(email)
+    return { token, user: { id: user.id, fullName: user.fullName, email: user.email } }
+  }
+
+  return apiRequest('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password })
+  })
+}
+
+export async function forgotPassword({ email }) {
+  if (USE_MOCK) {
+    await delay()
+    const users = readMockUsers()
+    const exists = users.some((u) => u.email.toLowerCase() === email.toLowerCase())
+    if (exists) {
+      const tokens = readResetTokens()
+      const resetToken = crypto.randomUUID()
+      tokens[resetToken] = { email, expires: Date.now() + 1000 * 60 * 30 }
+      writeResetTokens(tokens)
+      // In a real app this link is emailed. We log it so it's demoable.
+      console.info(
+        `%c[Wanderly Mock] Password reset link:%c /reset-password?token=${resetToken}`,
+        'color:#1580f5;font-weight:bold',
+        'color:inherit'
+      )
+    }
+    // Always return generic success — never reveal whether the email exists.
+    return { message: 'If that email exists, a reset link has been sent.' }
+  }
+
+  return apiRequest('/auth/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email })
+  })
+}
+
+export async function resetPassword({ token, password }) {
+  if (USE_MOCK) {
+    await delay()
+    const tokens = readResetTokens()
+    const entry = tokens[token]
+    if (!entry || entry.expires < Date.now()) {
+      throw new Error('This reset link is invalid or has expired.')
+    }
+    const users = readMockUsers()
+    const idx = users.findIndex((u) => u.email.toLowerCase() === entry.email.toLowerCase())
+    if (idx === -1) throw new Error('Account not found.')
+    users[idx].password = password
+    writeMockUsers(users)
+    delete tokens[token]
+    writeResetTokens(tokens)
+    return { message: 'Password updated successfully.' }
+  }
+
+  return apiRequest('/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ token, password })
+  })
+}
+
+export async function logoutUser() {
+  if (USE_MOCK) {
+    await delay(200)
+    return { message: 'Logged out.' }
+  }
+  return apiRequest('/auth/logout', { method: 'POST' })
+}
