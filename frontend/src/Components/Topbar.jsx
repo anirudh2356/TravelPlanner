@@ -12,7 +12,7 @@ export default function Topbar({ darkMode, setDarkMode }) {
         <button className="toggle-btn" onClick={() => setDarkMode(!darkMode)}>
           {darkMode ? "Light Mode" : "Dark Mode"}
         </button>
-        <div className="user-chip">JS</div>
+        <div className="user-chip">SS</div>
       </div>
     </header>
   );

@@ -4,8 +4,8 @@ export default function EditProfile() {
   const [formData, setFormData] = useState({
     name: "Sameer Sharma",
     email: "sameers@email.com",
-    phone: "+1 987 654 3210",
-    address: "221B, Baker Street, London",
+    phone: "+91 987 654 3210",
+    address: "221B, Baker Street, Mumbai",
   });
 
   const handleChange = (e) => {

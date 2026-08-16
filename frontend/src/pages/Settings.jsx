@@ -33,7 +33,7 @@ export default function Settings() {
         </form>
 
         <div className="toggle-row">
-          <span>Dark mode toggle</span>
+          <span>Dark mode</span>
           <label className="switch">
             <input
               type="checkbox"

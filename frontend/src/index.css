@@ -1,31 +1,719 @@
-/* Reset CSS */
+/* =========================================
+   ROOT VARIABLES
+   ========================================= */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Full Page */
-
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100vh;
-}
-
-/* Body */
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f5f7fa;
-  overflow-x: hidden;
-}
-
-/* Images */
-
-img {
-  display: block;
-  max-width: 100%;
-}
+   :root {
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --primary: #ff7a59;
+    --primary-dark: #e85f3c;
+    --border: #e5e7eb;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  }
+  
+  
+  /* =========================================
+     RESET
+     ========================================= */
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+  
+  body {
+    font-family: Inter, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  
+  /* =========================================
+     DARK MODE VARIABLES
+     ========================================= */
+  
+  .app.dark {
+    --bg: #0f172a;
+    --card: #111827;
+    --text: #f9fafb;
+    --muted: #cbd5e1;
+    --border: #243041;
+  }
+  
+  
+  /* =========================================
+     MAIN DASHBOARD LAYOUT
+     ========================================= */
+  
+  .app {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+  }
+  
+  .dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 20px;
+  }
+  
+  
+  /* =========================================
+     SIDEBAR
+     ========================================= */
+  
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #17324d, #0f2234);
+    color: white;
+    padding: 24px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .brand-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  
+  .brand h3 {
+    color: white;
+    font-size: 18px;
+  }
+  
+  .brand p {
+    color: #cbd5e1;
+    font-size: 13px;
+    margin-top: 3px;
+  }
+  
+  
+  /* =========================================
+     SIDEBAR NAVIGATION
+     ========================================= */
+  
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .nav-item {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: #dbeafe;
+    transition: 0.3s;
+    font-size: 15px;
+  }
+  
+  .nav-item:hover,
+  .nav-item.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+  }
+  
+  
+  /* =========================================
+     TOPBAR
+     ========================================= */
+  
+  .topbar {
+    background: var(--card);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 18px 22px;
+    border-radius: 18px;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .topbar h1 {
+    font-size: 24px;
+    color: var(--text);
+  }
+  
+  .topbar p,
+  .muted {
+    color: var(--muted);
+    margin-top: 5px;
+  }
+  
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  
+  
+  /* =========================================
+     USER CHIP
+     ========================================= */
+  
+  .user-chip {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+  }
+  
+  
+  /* =========================================
+     DARK MODE BUTTON
+     ========================================= */
+  
+  .toggle-btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-weight: 600;
+    transition: 0.3s;
+    background: #e5eef9;
+    color: #17324d;
+  }
+  
+  .toggle-btn:hover {
+    background: #d7e5f3;
+  }
+  
+  
+  /* =========================================
+     PAGE CONTENT
+     ========================================= */
+  
+  .page-content {
+    margin-top: 20px;
+  }
+  
+  .page {
+    display: grid;
+    gap: 20px;
+  }
+  
+  
+  /* =========================================
+     DASHBOARD HERO
+     ========================================= */
+  
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    border-radius: 18px;
+    padding: 24px;
+  }
+  
+  .hero-card h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  
+  .hero-card p {
+    color: var(--muted);
+  }
+  
+  
+  /* =========================================
+     COMMON PANELS / CARDS
+     ========================================= */
+  
+  .panel,
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    border-radius: 18px;
+  }
+  
+  .panel {
+    padding: 22px;
+  }
+  
+  .panel h2,
+  .panel h3 {
+    color: var(--text);
+  }
+  
+  
+  /* =========================================
+     STAT CARDS
+     ========================================= */
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 122, 89, 0.12);
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  
+  
+  /* =========================================
+     DASHBOARD CONTENT GRID
+     ========================================= */
+  
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  
+  /* =========================================
+     TRIPS / NOTIFICATIONS
+     ========================================= */
+  
+  .trip-list,
+  .notification-list {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  
+  .trip-list li,
+  .notification-item {
+    background: rgba(255, 122, 89, 0.08);
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+  
+  
+  /* =========================================
+     PROFILE
+     ========================================= */
+  
+  .profile-card {
+    text-align: center;
+  }
+  
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 14px;
+    border: 4px solid var(--primary);
+    cursor: pointer;
+  }
+  
+  .change-photo-text {
+    color: var(--primary);
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: -5px;
+    margin-bottom: 15px;
+  }
+  
+  .profile-details {
+    margin-top: 18px;
+    text-align: left;
+    display: grid;
+    gap: 10px;
+    color: var(--text);
+  }
+  
+  
+  /* =========================================
+     EDIT PROFILE FORM
+     ========================================= */
+  
+  .form-card {
+    max-width: 650px;
+    width: 100%;
+  }
+  
+  .form-card label,
+  .settings-form label {
+    display: block;
+    margin: 14px 0 8px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  .form-card input,
+  .form-card textarea,
+  .settings-form input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    outline: none;
+  }
+  
+  .form-card input:focus,
+  .form-card textarea:focus,
+  .settings-form input:focus {
+    border-color: var(--primary);
+  }
+  
+  
+  /* =========================================
+     BUTTONS
+     ========================================= */
+  
+  .primary-btn,
+  .secondary-btn,
+  .logout-btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  
+  .primary-btn {
+    background: var(--primary);
+    color: white;
+    margin-top: 18px;
+  }
+  
+  .primary-btn:hover {
+    background: var(--primary-dark);
+  }
+  
+  .secondary-btn {
+    background: #e5eef9;
+    color: #17324d;
+  }
+  
+  .secondary-btn:hover {
+    background: #d7e5f3;
+  }
+  
+  .logout-btn {
+    background: #ef4444;
+    color: white;
+    width: 100%;
+    margin-top: 18px;
+  }
+  
+  .logout-btn:hover {
+    background: #dc2626;
+  }
+  
+  
+  /* =========================================
+     BOOKINGS TABLE
+     ========================================= */
+  
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+  }
+  
+  th,
+  td {
+    text-align: left;
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  th {
+    color: var(--muted);
+    font-weight: 700;
+  }
+  
+  td {
+    color: var(--text);
+  }
+  
+  
+  /* =========================================
+     BOOKING STATUS
+     ========================================= */
+  
+  .status {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  
+  .status.confirmed {
+    background: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
+  }
+  
+  .status.cancelled {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+  }
+  
+  
+  /* =========================================
+     SETTINGS
+     ========================================= */
+  
+  .settings-card {
+    max-width: 700px;
+    width: 100%;
+  }
+  
+  .settings-form {
+    margin-bottom: 18px;
+  }
+  
+  .toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+  }
+  
+  .toggle-row span {
+    color: var(--text);
+  }
+  
+  
+  /* =========================================
+     SETTINGS SWITCH
+     ========================================= */
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 30px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #cbd5e1;
+    transition: 0.3s;
+    border-radius: 999px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    top: 4px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+  }
+  
+  .switch input:checked + .slider {
+    background: var(--primary);
+  }
+  
+  .switch input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+  
+  
+  /* =========================================
+     DARK MODE
+     ========================================= */
+  
+  .app.dark .secondary-btn,
+  .app.dark .toggle-btn {
+    background: #243041;
+    color: #f9fafb;
+  }
+  
+  .app.dark .brand h3,
+  .app.dark .topbar h1,
+  .app.dark .hero-card h2,
+  .app.dark .panel h2,
+  .app.dark .panel h3,
+  .app.dark .form-card label,
+  .app.dark .settings-form label,
+  .app.dark .toggle-row span,
+  .app.dark td {
+    color: var(--text);
+  }
+  
+  .app.dark .topbar p,
+  .app.dark .hero-card p,
+  .app.dark .muted,
+  .app.dark th {
+    color: var(--muted);
+  }
+  
+  
+  /* =========================================
+     SECTION HEADER
+     ========================================= */
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  
+  /* =========================================
+     RESPONSIVE - TABLET
+     ========================================= */
+  
+  @media (max-width: 1024px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  
+  /* =========================================
+     RESPONSIVE - MOBILE
+     ========================================= */
+  
+  @media (max-width: 768px) {
+    .dashboard-layout {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  
+    .nav-links {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  
+    .nav-item {
+      flex: 1 1 45%;
+      text-align: center;
+    }
+  
+    .main-content {
+      padding: 16px;
+    }
+  
+    .topbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .topbar-actions {
+      width: 100%;
+    }
+  
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .section-header,
+    .toggle-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
+  
+  /* =========================================
+     RESPONSIVE - SMALL MOBILE
+     ========================================= */
+  
+  @media (max-width: 480px) {
+    .main-content {
+      padding: 12px;
+    }
+  
+    .topbar,
+    .hero-card,
+    .panel,
+    .stat-card {
+      border-radius: 14px;
+    }
+  
+    .topbar h1 {
+      font-size: 20px;
+    }
+  
+    .nav-item {
+      flex: 1 1 100%;
+    }
+  }
